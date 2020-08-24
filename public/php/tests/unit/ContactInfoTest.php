@@ -1,6 +1,7 @@
 <?php
 use PHPUnit\Framework\TestCase;
 require_once dirname(dirname(__FILE__)) . "../../models/ContactInfo.php";
+require_once dirname(dirname(__FILE__)) . "../../models/DatabaseConnection.php";
 
 class ContactInfoTest extends TestCase
 {
@@ -13,11 +14,11 @@ class ContactInfoTest extends TestCase
         $phone = '1238675309';
 
         $info = new ContactInfo($name, $email, $message, $phone);
+
         $this->assertEquals($info->name,$name);
         $this->assertEquals($info->email,$email);
         $this->assertEquals($info->message,$message);
         $this->assertEquals($info->phone,$phone);
-
     }
 
     //should instantiate $info when phone property is NULL
@@ -33,6 +34,31 @@ class ContactInfoTest extends TestCase
         $this->assertEquals($info->email,$email);
         $this->assertEquals($info->message,$message);
         $this->assertEquals($info->phone,$phone);
+    }
+
+    //should save record to database
+    public function testSaveValidContactInfo(){
+      $name = 'Aaron Smith';
+      $email = 'aaronsmithweb@gmail.com';
+      $message = 'cool message send me some cool info!';
+      $phone = '1238675309';
+
+      $info = new ContactInfo($name, $email, $message, $phone);
+
+      $this->assertTrue($info->save());
+    }
+
+    //should fail to save record to database
+    public function testSaveInvalidContactInfo(){
+      $name = 'Aaron Smith';
+      $email = 'aaronsmithweb@gmail.com';
+      $message = 'cool message send me some cool info!';
+      $phone = '1238675309';
+
+      $info = new ContactInfo($name, $email, $message, $phone);
+      $info->name = null;
+
+      $this->assertFalse($info->save());
     }
 
     //should throw InvalidArgumentException when name property is missing
