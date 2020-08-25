@@ -33,14 +33,8 @@ class ContactInfo
     $stmt->bind_param("ssss", $this->name, $this->email, $this->phone, $this->message);
     $result = $stmt->execute();
 
-    if ($result){
-      return true;
-    }
-    else{
-      return false;
-    }
-
     $conn->close();
+    return $result;
   }
 }
 ?>
