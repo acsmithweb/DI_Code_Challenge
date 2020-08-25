@@ -386,3 +386,13 @@ img::-moz-selection {
   width: 100%;
   display: block;
 }
+
+.content-form .alert{
+	margin-top: 10px;
+}
+
+.content-form .error-button{
+	background-color: #FF6961;
+	border-color: #FF6961;
+	color: #000000;
+}
