@@ -115,7 +115,7 @@
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Contact Guy Smiley</h2>
                 <p>Remember Guy Smiley?  Yeah, he wants to hear from you.</p>
-                <form class="content-form">
+                <form class="content-form" id="contactForm">
                   <div class="col-">
                     <label for="name" class='light'> Full Name * </label></br>
                     <input type="text" id="name" name="name" class="text-field">
@@ -130,7 +130,11 @@
                   </div>
                   <label for="message" class='light'> Message *</label></br>
                   <textarea id="message" name="contact-message"></textarea></br>
-                  <input type="submit" class="btn btn-default btn-lg" value="Send Message">
+                  <button type="button" class="btn btn-default btn-lg" id="contactFormSubmissionBtn" onClick="submitContact()">Send Message</button>
+                  <div class="alert alert-danger alert-dismissible" id="badInfoAlert" role="alert" hidden>
+                    <button type="button" class="close">×</button>
+                    Please fill out the required fields.
+                  </div>
                 </form>
             </div>
         </div>
@@ -160,7 +164,7 @@
 
     <!-- Theme JavaScript -->
     <script src="js/grayscale.min.js"></script>
-
+    <script src="js/contact_form_submission.js"></script>
 </body>
 
 </html>

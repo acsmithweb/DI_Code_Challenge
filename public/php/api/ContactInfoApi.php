@@ -21,10 +21,10 @@ class ContactInfoApi
   }
 
   private function retrieve_contact_data(){
-    $name = isset($_POST['name']) ? $_POST['name'] : null;
-    $email = isset($_POST['email']) ? $_POST['email'] : null;
-    $message = isset($_POST['message']) ? $_POST['message'] : null;
-    $phone = isset($_POST['phone']) ? $_POST['phone'] : null;
+    $name = empty($_POST['name']) ? null : $_POST['name'];
+    $email = empty($_POST['email']) ? null : $_POST['email'];
+    $message = empty($_POST['message']) ? null : $_POST['message'];
+    $phone = empty($_POST['phone']) ? null : $_POST['phone'];
     return array ('name' => $name,'email'=>$email,'message'=>$message,'phone'=>$phone);
   }
 
