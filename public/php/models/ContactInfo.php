@@ -27,8 +27,8 @@ class ContactInfo
     throw new InvalidArgumentException('ContactInfo requires a name, email, and message');
   }
 
-  public function save(){
-    $conn = new DatabaseConnection();
+  public function save($conn = null){
+    if (is_null($conn)) $conn = new DatabaseConnection;
     $stmt = $conn->statement("INSERT INTO contact_info (Name, Email, Phone, Message) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("ssss", $this->name, $this->email, $this->phone, $this->message);
     $result = $stmt->execute();

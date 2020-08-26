@@ -45,7 +45,24 @@ class ContactInfoTest extends TestCase
 
       $info = new ContactInfo($name, $email, $message, $phone);
 
-      $this->assertTrue($info->save());
+      $mock_connection = $this->createMock(DatabaseConnection::class);
+      $mock_statement = $this->createMock(mysqli_stmt::class);
+
+      $mock_statement->expects($this->once())
+          ->method('bind_param')
+          ->with("ssss", $info->name, $info->email, $info->phone, $info->message);
+
+      $mock_statement->expects($this->once())
+          ->method('execute')
+          ->willReturn(true);
+
+      $mock_connection->expects($this->once())
+          ->method('statement')
+          ->with("INSERT INTO contact_info (Name, Email, Phone, Message) VALUES (?, ?, ?, ?)")
+          ->willReturn($mock_statement);
+
+
+      $this->assertTrue($info->save($mock_connection));
     }
 
     //should fail to save record to database
@@ -58,7 +75,23 @@ class ContactInfoTest extends TestCase
       $info = new ContactInfo($name, $email, $message, $phone);
       $info->name = null;
 
-      $this->assertFalse($info->save());
+      $mock_connection = $this->createMock(DatabaseConnection::class);
+      $mock_statement = $this->createMock(mysqli_stmt::class);
+
+      $mock_connection->expects($this->once())
+          ->method('statement')
+          ->with("INSERT INTO contact_info (Name, Email, Phone, Message) VALUES (?, ?, ?, ?)")
+          ->willReturn($mock_statement);
+
+      $mock_statement->expects($this->once())
+          ->method('bind_param')
+          ->with("ssss", $info->name, $info->email, $info->phone, $info->message);
+
+      $mock_statement->expects($this->once())
+          ->method('execute')
+          ->willReturn(false);
+
+      $this->assertFalse($info->save($mock_connection));
     }
 
     //should throw InvalidArgumentException when name property is missing
