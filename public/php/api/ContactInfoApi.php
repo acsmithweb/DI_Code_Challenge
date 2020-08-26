@@ -42,11 +42,10 @@ class ContactInfoApi
     $msg = ("Full Name: " . $contact->name ."\n Email: " . $contact->email . "\n Phone: " . $contact->phone . "\n Message: " . $contact->message);
     $msg = wordwrap($msg,70);
     $headers = "From: Aaron Smith";
-    if(mail("guy-smiley@example.com","Contact Information",$msg,"From: aaronsmithweb@gmail.com")){
+    if(mail("guy-smiley@example.com","Contact Information",$msg)){
       return http_response_code(200);
     }
     else{
-      echo 'message not accepted';
       return http_response_code(206);
     }
   }
