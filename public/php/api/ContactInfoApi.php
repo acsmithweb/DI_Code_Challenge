@@ -5,10 +5,20 @@ class ContactInfoApi
 {
   private $result = null;
 
+  public function call_api(){
+    switch ($_SERVER['REQUEST_METHOD']){
+      case "POST":
+        $this->create();
+        break;
+      default:
+        http_response_code(404);
+      }
+  }
+
   public function create(){
     try {
       $new_contact = $this->build_contact_info();
-      return $new_contact->save() ? http_response_code(200) : http_response_code(410);
+      return $new_contact->save() ? $this->mail_owner($new_contact) : http_response_code(400);
     }
     catch(Exception $e){
       http_response_code(400);
@@ -28,9 +38,22 @@ class ContactInfoApi
     return array ('name' => $name,'email'=>$email,'message'=>$message,'phone'=>$phone);
   }
 
+  private function mail_owner($contact){
+    $msg = ("Full Name: " . $contact->name ."\n Email: " . $contact->email . "\n Phone: " . $contact->phone . "\n Message: " . $contact->message);
+    $msg = wordwrap($msg,70);
+    $headers = "From: Aaron Smith";
+    if(mail("mariochaseweb@gmail.com","Contact Information",$msg, "From: aaronsmithweb@gmail.com")){
+      return http_response_code(200);
+    }
+    else{
+      echo 'message not accepted';
+      return http_response_code(206);
+    }
+  }
+
 }
 
 $contact_api = new ContactInfoApi;
 header('content-Type: application/json');
-$contact_api->create();
+$contact_api->call_api();
 ?>
