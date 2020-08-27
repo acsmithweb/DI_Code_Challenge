@@ -396,3 +396,7 @@ img::-moz-selection {
 	border-color: #FF6961;
 	color: #000000;
 }
+
+.content-form .validation-error{
+	border: 2px solid #FF6961;
+}

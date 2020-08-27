@@ -118,11 +118,11 @@
                 <form class="content-form" id="contactForm">
                   <div class="col-">
                     <label for="name" class='light'> Full Name * </label></br>
-                    <input type="text" id="name" name="name" class="text-field">
+                    <input type="text" id="name" name="name" class="text-field" maxlength="100">
                   </div>
                   <div class="col-">
                     <label for="email" class='light'> Email address * </label></br>
-                    <input type="text" id="email" name="email-address" class="text-field">
+                    <input type="text" id="email" name="email-address" class="text-field" maxlength="250">
                   </div>
                   <div class="col-">
                     <label for="phone" class='light'> Phone </label></br>
@@ -133,7 +133,7 @@
                   <button type="button" class="btn btn-default btn-lg" id="contactFormSubmissionBtn" onClick="submitContact()">Send Message</button>
                   <div class="alert alert-danger alert-dismissible" id="badInfoAlert" role="alert" hidden>
                     <button type="button" class="close">×</button>
-                    Please fill out the required fields.
+                    Please ensure required fields are filled correctly.
                   </div>
                 </form>
             </div>
