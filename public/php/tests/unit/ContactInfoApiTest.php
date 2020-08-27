@@ -42,6 +42,5 @@ class ContactInfoApiTest extends TestCase
 
     $this->assertEquals(404, http_response_code());
   }
-
 }
 ?>

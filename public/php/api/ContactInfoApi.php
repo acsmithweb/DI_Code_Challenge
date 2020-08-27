@@ -1,5 +1,6 @@
 <?php
 require_once dirname(dirname(__FILE__)) . "../models/ContactInfo.php";
+require_once dirname(dirname(__FILE__)) . "../services/EmailService.php";
 
 class ContactInfoApi
 {
@@ -18,7 +19,7 @@ class ContactInfoApi
   public function create(){
     try {
       $new_contact = $this->build_contact_info();
-      return $new_contact->save() ? $this->mail_owner($new_contact) : http_response_code(400);
+      return $new_contact->save() ? $this->email_owner($new_contact) : http_response_code(400);
     }
     catch(Exception $e){
       http_response_code(400);
@@ -38,11 +39,10 @@ class ContactInfoApi
     return array ('name' => $name,'email'=>$email,'message'=>$message,'phone'=>$phone);
   }
 
-  private function mail_owner($contact){
-    $msg = ("Full Name: " . $contact->name ."\n Email: " . $contact->email . "\n Phone: " . $contact->phone . "\n Message: " . $contact->message);
-    $msg = wordwrap($msg,70);
-    $headers = "From: Aaron Smith";
-    if(mail("guy-smiley@example.com","Contact Information",$msg)){
+  protected function email_owner($contact, $email_service = null){
+    if (is_null($email_service)) $email_service = new EmailService("guy-smiley@example.com","Contact Information",$this->mail_message_builder($contact));
+
+    if($email_service->send()){
       return http_response_code(200);
     }
     else{
@@ -50,6 +50,9 @@ class ContactInfoApi
     }
   }
 
+  private function mail_message_builder($contact){
+    return ("Full Name: " . $contact->name ."\n Email: " . $contact->email . "\n Phone: " . $contact->phone . "\n Message: " . $contact->message);
+  }
 }
 
 $contact_api = new ContactInfoApi;

@@ -17,6 +17,7 @@ class DatabaseConnection
   }
 
   public function statement($prep_stmt){
+    //prepare statement to avoid sql injection
     $stmt = $this->conn->prepare($prep_stmt);
     return $stmt;
   }

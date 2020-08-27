@@ -1,3 +1,4 @@
+//adds the alert element to the page and hides it
 $('.alert .close').on('click', function(e) {
   $(this).parent().hide();
   $("#contactFormSubmissionBtn").removeClass('error-button');
@@ -31,11 +32,11 @@ function validName() {
 }
 
 function validEmail() {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  //regex to validate email format
+  const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   var email = $.trim($('#email').val());
-  console.log(re.test(email.toLowerCase()));
 
-  if(email == '' || re.test(email.toLowerCase()) == false){
+  if(email == '' || regex.test(email.toLowerCase()) == false){
     $('#email').addClass('validation-error');
     return false;
   }
@@ -58,6 +59,7 @@ function validMessage() {
   }
 }
 
+//Used to display error with improper form entry
 function submissionError(){
   $("#contactFormSubmissionBtn").addClass('error-button');
   $("#contactFormSubmissionBtn").text('Missing Information');
@@ -68,6 +70,7 @@ function submitContact() {
   var status = null;
 
   if(validateForm()){
+    //ajax call to backend if form data is valid
     $.ajax({
       type: "POST",
       url: "/public/php/api/ContactInfoApi.php",
@@ -80,16 +83,19 @@ function submitContact() {
       data_type:'json',
       success: console.log('success!'),
       statusCode:{
+        //Disable message button and display message sent on button
         200: function(){
           $("#contactFormSubmissionBtn").text('Message Sent');
           $("#contactFormSubmissionBtn").prop('disabled', true);
         },
+        //Display error button on errored call
         400: function(){
           submissionError();
         }
       }
     });
   }
+  //if form data is not valid
   else{
     submissionError();
   }
